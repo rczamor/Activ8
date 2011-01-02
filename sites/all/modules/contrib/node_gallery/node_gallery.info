@@ -1,0 +1,37 @@
+; $Id: node_gallery.info,v 1.4.2.3 2010/07/21 15:35:50 justintime Exp $
+
+name = Node Gallery
+description = "An image gallery module."
+core = 6.x
+dependencies[] = imagecache
+dependencies[] = imagefield
+dependencies[] = views
+package = Node Gallery
+
+; Information added by drupal.org packaging script on 2009-03-18
+version = "6.x-1.x-dev"
+core = "6.x"
+project = "node_gallery"
+datestamp = "1237335258"
+
+
+; Information added by drupal.org packaging script on 2009-04-27
+version = "6.x-1.0-alpha8"
+core = "6.x"
+project = "node_gallery"
+datestamp = "1240871468"
+
+
+; Information added by drupal.org packaging script on 2009-11-09
+version = "6.x-2.x-dev"
+core = "6.x"
+project = "node_gallery"
+datestamp = "1257725614"
+
+
+; Information added by drupal.org packaging script on 2010-12-22
+version = "6.x-3.0-alpha2"
+core = "6.x"
+project = "node_gallery"
+datestamp = "1293047755"
+

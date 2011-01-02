@@ -1,0 +1,4 @@
+<?php
+
+include_once('activ8_resources.features.inc');
+

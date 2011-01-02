@@ -1,0 +1,13 @@
+; $Id: mm_emfield.info,v 1.1.2.1 2010/04/06 22:56:07 aaron Exp $
+name = Media Mover Emfield
+description = "Media Mover - Embedded Media Field (Emfield) interfaces"
+package = "Media Mover"
+dependencies[] = media_mover_api
+dependencies[] = emfield
+core=6.x
+; Information added by drupal.org packaging script on 2010-04-18
+version = "6.x-1.0-beta7"
+core = "6.x"
+project = "media_mover"
+datestamp = "1271631907"
+

@@ -1,0 +1,13 @@
+; $Id: fullcalendar.info,v 1.1 2010/09/08 16:54:36 ablondeau Exp $ 
+name = FullCalendar
+description = Provides a views style plugin for FullCalendar
+core = 6.x
+package = "Views"
+dependencies[] = views
+dependencies[] = date
+; Information added by drupal.org packaging script on 2010-11-14
+version = "6.x-1.2-beta5"
+core = "6.x"
+project = "fullcalendar"
+datestamp = "1289708470"
+

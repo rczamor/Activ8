@@ -1,0 +1,16 @@
+Activ8# $Id: UPGRADE.txt,v 1.4 2010/12/28 16:59:39 zfactor Exp $
+
+Upgrading to Activ8 1.5 dev
+==============================
+
+* NOTE: VERSION 1.0 of Activ8 is no longer supported. We will also not provide backwards compatability. As of this 1.5 branch, we are taking this distribution in a different direction.
+
+1. Backup both the code and database.
+
+2. Replace your Activ8 codebase, be sure to preserve the files directory.
+
+3. Clear your caches
+
+4. Run any database updates.
+
+

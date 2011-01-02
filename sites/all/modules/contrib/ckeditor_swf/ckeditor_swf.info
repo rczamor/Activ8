@@ -1,0 +1,10 @@
+; $Id: ckeditor_swf.info,v 1.2 2010/07/13 17:04:30 anrikun Exp $
+name = CKEditor SWF
+description = Enhanced Flash embedding plugin for CKEditor.
+core = 6.x
+; Information added by drupal.org packaging script on 2010-07-15
+version = "6.x-2.1"
+core = "6.x"
+project = "ckeditor_swf"
+datestamp = "1279209614"
+

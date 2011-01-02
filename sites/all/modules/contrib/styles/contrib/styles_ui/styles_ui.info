@@ -1,0 +1,14 @@
+; $Id: styles_ui.info,v 1.1.4.2 2010/07/28 16:21:44 aaron Exp $
+
+name = Styles UI
+description = Administrative interface for the Styles module.
+package = Styles
+core = 6.x
+dependencies[] = styles
+
+; Information added by drupal.org packaging script on 2010-08-26
+version = "6.x-2.0-alpha5"
+core = "6.x"
+project = "styles"
+datestamp = "1282831608"
+

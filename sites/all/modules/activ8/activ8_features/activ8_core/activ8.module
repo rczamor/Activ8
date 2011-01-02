@@ -1,0 +1,17 @@
+<?php
+
+include_once('activ8.features.inc');
+
+// helper functions
+
+function di_get_tid($name, $vid = 0) {
+  // if a vid is passed in, limit to it
+  if ($vid) {
+    $results = db_query_range("SELECT tid FROM {term_data} WHERE name = '%s' and vid = %d", $name, $vid, 0, 1);
+  }
+  else {
+    $results = db_query_range("SELECT tid FROM {term_data} WHERE name = '%s'", $name, 0, 1);
+  }
+  return db_result($results);
+};
+

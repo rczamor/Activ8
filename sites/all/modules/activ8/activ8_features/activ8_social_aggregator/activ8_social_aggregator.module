@@ -1,0 +1,3 @@
+<?php
+
+include_once('activ8_social_aggregator.features.inc');

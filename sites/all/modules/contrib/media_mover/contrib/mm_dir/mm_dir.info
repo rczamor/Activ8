@@ -1,0 +1,12 @@
+; $Id: mm_dir_new.info,v 1.1.2.1 2008/08/05 22:11:42 arthuregg Exp $
+name = Media Mover Directory
+description = Harvest and store files to local directories
+package = "Media Mover"
+dependencies[] = media_mover_api 
+core = 6.x
+; Information added by drupal.org packaging script on 2010-04-18
+version = "6.x-1.0-beta7"
+core = "6.x"
+project = "media_mover"
+datestamp = "1271631907"
+

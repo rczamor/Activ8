@@ -1,0 +1,126 @@
+<?php
+// $Id: node_gallery_taxonomy.module,v 1.1.2.1 2010/12/22 23:04:16 justintime Exp $
+
+/**
+ * @file
+ * Node Gallery Taxonomy module file.
+ */
+
+/**
+ * Implementation of hook_form_FORM_ID_alter().
+ */
+function node_gallery_taxonomy_form_node_gallery_relationship_settings_form_alter(&$form, &$form_state) {
+  $relationship = $form['#relationship'];
+  $form['node_gallery_taxonomy_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Taxonomy settings'),
+    '#description' => t('This area defines Node Gallery Taxonomy settings.'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+  $form['node_gallery_taxonomy_settings']['update_all'] = array(
+    '#type' => 'submit',
+    '#weight' => -5,
+    '#value' => t('One-time sync of taxonomy from every gallery in this relationship to its images'),
+    '#submit' => array('node_gallery_taxonomy_cascade_all'),
+  );
+  $form['node_gallery_taxonomy_settings']['cascade_taxonomy'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable taxonomy cascade from gallery to images?'),
+    '#description' => t('When checked, the button above becomes active and taxonomy changes made on a gallery will be cascaded down to its images.'),
+    '#default_value' => isset($relationship['settings']['cascade_taxonomy']) ? $relationship['settings']['cascade_taxonomy'] : FALSE,
+  );  
+  if (!$relationship['settings']['cascade_taxonomy']) {
+    $form['node_gallery_taxonomy_settings']['update_all']['#disabled'] = TRUE;
+  }
+  $form['#submit'][] = 'node_gallery_taxonomy_settings_form_submit';
+}
+
+/**
+ * Implements hook_node_gallery_relationship_default_settings_alter().
+ */
+function node_gallery_taxonomy_node_gallery_relationship_default_settings_alter(&$settings) {
+  $settings['cascade_taxonomy'] = FALSE;
+}
+
+/**
+ * Submit handler that cascades to all images
+ * 
+ * @param $form
+ * @param $form_state
+ */
+function node_gallery_taxonomy_cascade_all($form, &$form_state) {
+  $relationship = (object)$form['#relationship'];
+  $gids = node_gallery_get_gallery_gids($relationship->gallery_type);
+  $operations = array();
+  foreach ($gids as $gid) {
+    $gallery = node_load($gid);
+    foreach (node_gallery_get_image_nids($gid) as $nid) {
+      $node = new stdClass;
+      $node->nid = $nid;
+      $node->taxonomy = $gallery->taxonomy;
+      $operations[] = array('node_gallery_batch_node_save', array($node));
+    }
+  }
+  if (!empty($operations)) {
+    $batch = array(
+      'operations' => $operations,
+      'finished' => 'node_gallery_image_process_finished',
+      'title' => t("Modifying Images"),
+      'init_message' => t("Images modification process is starting."),
+      'progress_message' => t('Processed @current out of @total.'),
+      'error_message' => t('Images modification has encountered an error.'),
+    );
+    batch_set($batch);
+  }
+}
+
+/**
+ * Implementation of hook_nodeapi().
+ *
+ * @param &$node The node the action is being performed on.
+ * @param $op What kind of action is being performed. Possible values: alter, delete, delete revision, insert, load, prepare, prepare translation, print, rss item, search result, presave, update, update index, validate, view
+ * @param $a3
+ * @param $a4
+ */
+function node_gallery_taxonomy_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+  switch ($op) {
+    case 'presave':
+      if (in_array($node->type, (array)node_gallery_get_types('gallery'))) {
+        if (isset($node->nid)) {
+          $nids =  node_gallery_get_image_nids($node->nid);
+          if (count($nids) > 0) {
+            $relationship = node_gallery_get_relationship($node->type);
+            if ($relationship['settings']['cascade_taxonomy']) {
+              // @todo: check if gallery and image both have same taxo vocabs.
+              $old = node_load($node->nid);
+              if (node_gallery_taxonomy_compare($old, $node)) {
+                module_load_include('inc', 'node', 'node.admin');
+                node_mass_update($nids, array('taxonomy' => $node->taxonomy));
+                watchdog('node_gallery_taxonomy', 'Cascaded taxonomy from @title to !count image nodes.', array('@title' => $node->title, '!count' => count($nids)));
+              }
+            }
+          }
+        }
+      }
+      break;
+  }
+}
+
+/**
+ * Implementation of hook_help().
+ *
+ * @param $path A Drupal menu router path the help is being requested.
+ * @param $arg An array that corresponds to the return of the arg() function.
+ * @return A localized string containing the help text.
+ */
+function node_gallery_taxonomy_help($path, $arg) {
+  $output = '';
+  switch ($path) {
+    case "admin/help#node_gallery_taxonomy":
+      $output = file_get_contents(drupal_get_path('module', 'node_gallery_taxonomy') .'/README.txt');
+      return '<pre>'. check_plain($output) .'</pre>';
+      break;
+  }
+  return $output;
+}

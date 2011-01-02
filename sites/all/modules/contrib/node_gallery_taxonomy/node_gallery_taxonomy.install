@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Installation file for node_gallery_taxonomy
+ */
+
+/**
+ * Implementation of hook_install().
+ */
+function node_gallery_taxonomy_install() {
+  drupal_set_message(t('Node Gallery Taxonomy installed - please enable it by editing your !relationships.',
+    array('!relationships' => l('relationships', 'admin/settings/node_gallery/list'))));
+  $weight = db_result(db_query("SELECT weight FROM {system} WHERE name = 'node_gallery' AND type = 'module'"));
+  db_query("UPDATE {system} SET weight = %d WHERE name = 'node_gallery_taxonomy' AND type = 'module'", $weight + 1);
+}

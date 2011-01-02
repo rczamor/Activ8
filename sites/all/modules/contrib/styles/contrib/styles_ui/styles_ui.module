@@ -1,0 +1,119 @@
+<?php
+// $Id: styles_ui.module,v 1.1.4.5.2.1 2010/07/30 21:32:36 aaron Exp $
+
+/**
+ * @file styles_ui.module
+ * Styles UI
+ *
+ * Administrative interface for the Styles module.
+ */
+
+/**
+ * Implementation of hook_menu().
+ */
+function xstyles_ui_menu() {
+  // Each field type Style may choose to allow the Styles module to manage its
+  // UI. To do so, they'll need to create an 'admin' array in its definition
+  // at hook_styles_containers that will contain the path info:
+  //  'path' => The path to the overview listing page,
+  //  'title' => The title for the overview listing page,
+  //  'description' => The description for the overview listing page,
+  //  'access callback' => The access callback for the overview listing pages,
+  //  'access arguments' => The access arguments for the overview listing pages,
+  //  'add' => an optional array with the info for adding a new container:
+  //    'title' => The title to add a new container for this field,
+  //    'description' => The discription to add a new container for this field,
+  $items = array();
+  $presets = styles_default_presets();
+  $styles_containers = styles_default_containers();
+  $field_types = _content_field_types();
+  dpm($styles_containers);
+  dpm($presets);
+
+  $items['admin/build/styles'] = array(
+    'title' => 'Styles',
+    'description' => 'Administer styles containers and presets.',
+    'access arguments' => array('administer styles'),
+    'page callback' => 'styles_ui_containers_overview',
+    'file' => 'includes/styles_ui.admin.inc',
+  );
+
+//   foreach ($styles_containers as $field_type => $containers) {
+//     if (isset($containers['admin']) && isset($containers['admin']['path'])) {
+//       $field_label = $field_types[$field_type]['label'];
+//       $title = $field_label . ' styles';
+//       $description = 'Configure ' . $field_label . ' styles.';
+//       $access_callback = isset($containers['admin']['access callback']) ? $containers['admin']['access callback'] : 'user_access';
+//       $access_arguments = isset($containers['admin']['access arguments']) ? $containers['admin']['access arguments'] : array('administer site configuration');
+//       $items[$containers['admin']['path']] = array(
+//         'title' => $title,
+//         'description' => $description,
+//         'access callback' => $access_callback,
+//         'access arguments' => $access_arguments,
+//         'page callback' => 'styles_ui_containers_overview',
+//         'page arguments' => array($field_type),
+//         'file' => 'includes/styles_ui.admin.inc',
+//       );
+//       $items[$containers['admin']['path'] . '/list'] = array(
+//         'title' => 'List',
+//         'type' => MENU_DEFAULT_LOCAL_TASK,
+//         'weight' => -10,
+//       );
+//       $title = 'Add ' . $field_label . ' style preset';
+//       $description = '';
+//       $items[$containers['admin']['path'] . '/add'] = array(
+//         'title' => $title,
+//         'description' => $description,
+//         'page callback' => 'drupal_get_form',
+//         'page arguments' => array('styles_ui_preset_add_form', $field_type),
+//         'access callback' => $access_callback,
+//         'access arguments' => $access_arguments,
+//         'type' => MENU_LOCAL_ACTION,
+//         'file' => 'includes/styles_ui.admin.inc',
+//       );
+//       $count = substr_count($containers['admin']['path'] . '/edit/%', '/');
+//       $items[$containers['admin']['path'] . '/edit/%'] = array(
+//         'page callback' => 'drupal_get_form',
+//         'page arguments' => array('styles_ui_preset_edit_form', $field_type, $count),
+//         'access callback' => $access_callback,
+//         'access arguments' => $access_arguments,
+//         'type' => MENU_CALLBACK,
+//         'file' => 'includes/styles_ui.admin.inc',
+//       );
+//       $items['styles-ui/preview/'. $field_type .'/%/%'] = array(
+//         'page callback' => 'styles_ui_preview_ajax',
+//         'page arguments' => array(2, 3, 4),
+//         'access callback' => $access_callback,
+//         'access arguments' => $access_arguments,
+//         'file' => 'includes/styles_ui.admin.inc',
+//         'type' => MENU_CALLBACK,
+//       );
+//     }
+//   }
+
+  return $items;
+}
+
+/**
+ * Implementation of hook_help().
+ */
+function styles_ui_help($path, $arg) {
+  foreach (styles_default_containers() as $field_type => $containers) {
+    if (isset($containers['admin']) && ($path == $containers['admin']['path']) && isset($containers['help'])) {
+      return '<p>' . $containers['help'] . '</p>';
+    }
+  }
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function styles_ui_theme($existing, $type, $theme, $path) {
+  return array(
+    'styles_ui_admin_overview' => array(
+      'variables' => array('preset_name' => NULL),
+      'path' => $path .'/themes',
+      'file' => 'styles_ui.theme.inc',
+    ),
+  );
+}
