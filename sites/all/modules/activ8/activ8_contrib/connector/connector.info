@@ -1,0 +1,12 @@
+; $Id: connector.info,v 1.1 2010/02/21 10:56:09 voxpelli Exp $
+name = Connector
+description = Provides base functionality for one-click login with eg. Facebook Connect and Twitter Connect
+core = 6.x
+version = "6.x-0.1"
+package = "Connector"
+; Information added by drupal.org packaging script on 2010-08-21
+version = "6.x-1.0-alpha1"
+core = "6.x"
+project = "connector"
+datestamp = "1282425091"
+

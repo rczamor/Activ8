@@ -1,0 +1,17 @@
+; $Id: http_client_oauth.info,v 1.1 2010/02/20 23:03:06 hugowetterberg Exp $
+name = Http Client OAuth
+description = Provides a OAuth authentication mechanism for the Http Client
+dependencies[] = autoload
+dependencies[] = oauth_common
+dependencies[] = http_client
+
+package = Services - clients
+core = 6.x
+php = 5.x
+
+; Information added by drupal.org packaging script on 2010-09-25
+version = "6.x-2.1"
+core = "6.x"
+project = "http_client"
+datestamp = "1285437361"
+

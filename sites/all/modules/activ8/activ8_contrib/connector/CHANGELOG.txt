@@ -1,0 +1,5 @@
+// $Id: CHANGELOG.txt,v 1.1.2.1 2010/08/21 21:07:06 voxpelli Exp $
+
+Connector 6.x-1.0-alpha1, 2010-08-21
+------------------------------
+by voxpelli: Initial release
